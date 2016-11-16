@@ -5,10 +5,12 @@ package txstatebookstore
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+import java.nio.charset.Charset
+
 @Transactional(readOnly = true)
 class BookController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
     def index(Integer max) {
 		if(!session.userName) redirect(controller:"User", action: "login")
@@ -17,7 +19,7 @@ class BookController {
     }
 
     def show(Book bookInstance) {
-		if(!session.userName) redirect(controller:"User", action: "login")
+		if(!session.userName) redirect(controller:"User", action: "login")		
         respond bookInstance
     }
 
@@ -36,7 +38,9 @@ class BookController {
             respond bookInstance.errors, view:'create'
             return
         }
-
+		def uploadedFile = request.getFile('bookImage')
+		bookInstance.bookImage = uploadedFile.getBytes()
+		bookInstance.bookImageType = uploadedFile.contentType
         bookInstance.save flush:true
 
         request.withFormat {
@@ -63,7 +67,10 @@ class BookController {
             respond bookInstance.errors, view:'edit'
             return
         }
-
+		
+		def uploadedFile = request.getFile('bookImage')
+		bookInstance.bookImage = uploadedFile.getBytes()		
+		bookInstance.bookImageType = uploadedFile.contentType
         bookInstance.save flush:true
 
         request.withFormat {
@@ -103,4 +110,60 @@ class BookController {
             '*'{ render status: NOT_FOUND }
         }
     }
+	
+	def search() {
+		def map = [:]
+		
+		if(!params.keyword || !params.searchBy || params.keyword == 'Search') {
+			redirect controller: "index", action: "index"
+		}
+		
+		def searchResults
+		if(params.searchBy == 'title') {
+			searchResults = Book.findAllByTitleLike('%' + params.keyword + '%', [max: 50, sort: 'title', order: 'asc'])
+		}
+		
+		map.put("searchResults", searchResults)
+		render(view: 'search', model: map)
+	}
+	
+	def showPayload() {
+		def bookInstance = Book.get(params.id)
+		// write the image to the output stream		
+		response.setHeader("Content-disposition", "attachment; filename=${bookInstance.id}")
+		response.contentType = bookInstance.bookImageType
+		response.outputStream << bookInstance.bookImage	
+		response.outputStream.flush()
+	}
+	
+	def addToCart() {
+		def cart
+		def map = [:]
+		
+		if(session.myCart != null){
+			cart = session.myCart
+			
+		}else{
+			cart = [:]
+		}
+		def bookId = params.id;
+		if(cart.containsKey(bookId)){
+			cart[bookId]["quantity"] = cart[bookId]["quantity"] + 1
+		}else
+		{
+			def book = Book.findById(bookId)
+			if(book != null){
+				cart[bookId] = ["title": book.title, "price":book.price, "quantity": 1, "isbn": book.isbn]
+			}
+		}
+		
+		map.put('cart', cart)
+		session.myCart = cart;
+		render(view: 'myCart')
+	}
+	
+	def viewCart(){
+		def map = [:]
+		render(view: 'myCart', model: map)
+	}
 }

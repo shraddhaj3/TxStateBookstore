@@ -9,14 +9,14 @@
 	</head>
 	<body>
 		<a href="#show-book" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
+		<%--<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
-		<div id="show-book" class="content scaffold-show" role="main">
+		--%><div id="show-book" class="content scaffold-show" role="main">
 			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
@@ -62,11 +62,11 @@
 				<g:if test="${bookInstance?.bookImage}">
 				<li class="fieldcontain">
 					<span id="bookImage-label" class="property-label"><g:message code="book.bookImage.label" default="Book Image" /></span>
-					
+					<span><img width="100px" src="${createLink(controller:'Book', action:'showPayload', id: bookInstance.id)}"/></span>
 				</li>
 				</g:if>
 			
-				<g:if test="${bookInstance?.bookImageType}">
+				<%--<g:if test="${bookInstance?.bookImageType}">
 				<li class="fieldcontain">
 					<span id="bookImageType-label" class="property-label"><g:message code="book.bookImageType.label" default="Book Image Type" /></span>
 					
@@ -74,7 +74,8 @@
 					
 				</li>
 				</g:if>
-			
+				--%>
+				
 				<g:if test="${bookInstance?.quantity}">
 				<li class="fieldcontain">
 					<span id="quantity-label" class="property-label"><g:message code="book.quantity.label" default="Quantity" /></span>

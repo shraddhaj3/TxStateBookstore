@@ -32,10 +32,11 @@
 					
 						<g:sortableColumn property="yearOfPublication" title="${message(code: 'book.yearOfPublication.label', default: 'Year Of Publication')}" />
 					
+						<g:sortableColumn property="price" title="${message(code: 'book.price.label', default: 'Price')}" />
+						
+						<g:sortableColumn property="quantity" title="${message(code: 'book.quantity.label', default: 'Quantity')}" />
+						
 						<g:sortableColumn property="bookImage" title="${message(code: 'book.bookImage.label', default: 'Book Image')}" />
-					
-						<g:sortableColumn property="bookImageType" title="${message(code: 'book.bookImageType.label', default: 'Book Image Type')}" />
-					
 					</tr>
 				</thead>
 				<tbody>
@@ -48,12 +49,13 @@
 					
 						<td>${fieldValue(bean: bookInstance, field: "publisher")}</td>
 					
-						<td>${fieldValue(bean: bookInstance, field: "yearOfPublication")}</td>
+						<td>${bookInstance?.yearOfPublication }</td>
+						
+						<td>${fieldValue(bean: bookInstance, field: "price")}</td>
+						
+						<td>${fieldValue(bean: bookInstance, field: "quantity")}</td>
 					
-						<td>${fieldValue(bean: bookInstance, field: "bookImage")}</td>
-					
-						<td>${fieldValue(bean: bookInstance, field: "bookImageType")}</td>
-					
+						<td><span><img width="100px" src="${createLink(controller:'Book', action:'showPayload', id: bookInstance.id)}"/></span></td>
 					</tr>
 				</g:each>
 				</tbody>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.codehaus.groovy.grails.validation.MinConstraint"/>
+<fullyQualifiedTypeName name="java.nio.charset.CharsetEncoder"/>
+<fullyQualifiedTypeName name="java.nio.charset.Charset"/>
+<fullyQualifiedTypeName name="com.sun.xml.internal.org.jvnet.staxex.Base64Encoder"/>
+<fullyQualifiedTypeName name="java.util.Base64"/>
+<fullyQualifiedTypeName name="org.apache.tools.ant.util.Base64Converter"/>
+<fullyQualifiedTypeName name="org.apache.tools.ant.taskdefs.Get.Base64Converter"/>
+</qualifiedTypeNameHistroy>

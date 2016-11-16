@@ -1,0 +1,13 @@
+<%@ page import="txstatebookstore.Book" %>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="layout" content="main">
+		<g:set var="entityName" value="${message(code: 'book.label', default: 'Book')}" />
+		<title>My Shopping Cart</title>
+	</head>
+	<body>
+		<h1>My Shopping Cart</h1>
+		<a href="#list-book" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+	</body>
+</html>

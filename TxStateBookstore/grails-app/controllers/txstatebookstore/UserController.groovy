@@ -104,8 +104,7 @@ class UserController {
     }
 	
 	def login() {
-		session.userName = null
-		session.role = null
+		clearSessionObjects()
 	}
 	
 	def validate() {
@@ -114,7 +113,8 @@ class UserController {
 		if(user != null) {
 			session.userName = user.userName
 			session.role = user.role
-			
+			session.userId = user.id
+			session.myCart = null
 			redirect controller:'Index', action: 'index'
 		}
 		else{
@@ -124,8 +124,15 @@ class UserController {
 	}
 	
 	def logout() {
+		clearSessionObjects()
+		session.invalidate()
+		redirect(uri:'/')
+	}
+	
+	def clearSessionObjects(){
 		session.userName = null
 		session.role = null
-		redirect(uri:'/')
+		session.userId = null
+		session.myCart = null
 	}
 }

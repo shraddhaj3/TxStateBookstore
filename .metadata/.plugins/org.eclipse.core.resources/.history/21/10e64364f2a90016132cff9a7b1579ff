@@ -1,0 +1,29 @@
+<%@ page import="txstatebookstore.Book" %>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="layout" content="main">
+		<g:set var="entityName" value="${message(code: 'book.label', default: 'Book')}" />
+		<title>Book Search Results</title>
+	</head>
+	<body>
+		<a href="#list-book" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+		
+		<table>
+			<thead>
+				<tr>
+					<td>Book Title</td>
+					<td>ISBN</td>
+				</tr>
+			</thead>
+			<tbody>
+				<g:each in="${searchResults }" var="book">
+					<tr>
+						<td>${book.title }</td>
+						<td>${book.isbn }</td>
+					</tr>
+				</g:each>
+			</tbody>
+		</table>
+	</body>
+</html>

@@ -78,35 +78,45 @@
 					margin-top: 0;
 				}
 			}
+			/*Added by Shraddha*/
+			.side-sub-menu {
+				font-style: italic;
+				font-size: x-small;
+				margin-left: 2em;
+				
+			}
+			#status li .side-sub-menu  {
+			    display: none;
+			} 
+			#status li:hover .side-sub-menu  {
+			    z-index:1;
+			   display: inline-block;
+			} 
 		</style>
 	</head>
 	<body>
 		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div id="status" role="complementary">
-			<h1>Application Status</h1>
+		  <div id="status" role="complementary">
+			<h1>Menu</h1>
 			<ul>
-				<!--  <li>App version: <g:meta name="app.version"/></li>
-				<li>Grails version: <g:meta name="app.grails.version"/></li>
-				<li>Groovy version: ${GroovySystem.getVersion()}</li>
-				<li>JVM version: ${System.getProperty('java.version')}</li>
-				<li>Reloading active: ${grails.util.Environment.reloadingAgentEnabled}</li>
-				<li>Controllers: ${grailsApplication.controllerClasses.size()}</li>
-				<li>Domains: ${grailsApplication.domainClasses.size()}</li>
-				<li>Services: ${grailsApplication.serviceClasses.size()}</li>
-				<li>Tag Libraries: ${grailsApplication.tagLibClasses.size()}</li>-->
-				<li>Update Account Information</li>
-				<li>View Cart</li>
-				<li>Contact Us</li>
-				<li>Help</li>
-				<li>View Order History</li>
-				<li>Search</li>
-				<li><g:link controller="Book" action="create">Add Book</g:link></li>
-				<li><g:link controller="Book" action="delete">Delete Book</g:link></li>
-				<li><g:link controller="Book" action="edit">Modify Book Details</g:link></li>
-				<li>Generate Report</li>
-				<li>View Waiting List for Book</li>
-				<li>Change Password</li>
-				<li>Select Books for course</li>
+				<li><a href="#">Recommend Books for course</a></li>
+				<li><a href="#">Generate Report</a></li>
+				<li><a href="#">Manage Inventory</a>
+	                <ul class="side-sub-menu" id="sm_manageInventory">
+	                	<li><g:link controller="Book" action="create">View All Books</g:link></li>
+	                	<li><g:link controller="Book" action="create">Add Book</g:link></li>
+	                	<li><g:link controller="Book" action="create">View Waiting List for Book</g:link></li>
+	                </ul>
+		        </li>
+		        <li><a href="#">My Account</a>
+	                <ul class="side-sub-menu" id="sm_manageInventory">
+	                	<li><g:link>View Past Orders</g:link></li>
+						<li><g:link controller="User" action="edit" id="${session.userId }">Update Account</g:link></li>
+						<li><g:link>Change Password</g:link></li>
+						<li><g:link controller="User" action="logout">Logout</g:link></li>
+	                </ul>
+		        </li>
+				
 			</ul>
 			<!--  <h1>Installed Plugins</h1>
 			<ul>
