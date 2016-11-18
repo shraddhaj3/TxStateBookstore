@@ -1,6 +1,8 @@
 .metadata/
 RemoteSystemsTempFiles/
 Servers/
+TxStateBookstore/target-eclipse/
+TxStateBookstore/target/
 build/
 *.iws
 *Db.properties
