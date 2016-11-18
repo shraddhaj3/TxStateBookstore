@@ -122,6 +122,48 @@ class BookController {
 		if(params.searchBy == 'title') {
 			searchResults = Book.findAllByTitleLike('%' + params.keyword + '%', [max: 50, sort: 'title', order: 'asc'])
 		}
+		if(params.searchBy == 'author') {
+			searchResults = Book.withCriteria {
+				authors{
+					like("authorName",'%' + params.keyword + '%')
+				}
+				maxResults(50)
+				order("title", "asc")
+			}
+		}
+		if(params.searchBy == 'subject') {
+			searchResults = Book.withCriteria {
+				subjects{
+					like("courseName",'%' + params.keyword + '%')
+				}
+			}
+			maxResults(50)
+			order("title", "asc")
+		}
+		if(params.searchBy == 'isbn') {
+			searchResults = Book.findAllByIsbnLike('%' + params.keyword + '%', [max: 50, sort: 'title', order: 'asc'])
+		}
+		if(params.searchBy == 'courseNumber') {
+			searchResults = Book.withCriteria {
+				subjects{
+					like("courseNumber",'%' + params.keyword + '%')
+				}
+			}
+			maxResults(50)
+			order("title", "asc")
+		}
+		if(params.searchBy == 'professor') {
+			searchResults = Book.withCriteria {
+				users{
+					like("firstName",'%' + params.keyword + '%')
+					or {
+						like("lastName",'%' + params.keyword + '%')
+					}
+				}
+			}
+			maxResults(50)
+			order("title", "asc")
+		}
 		
 		map.put("searchResults", searchResults)
 		render(view: 'search', model: map)
