@@ -99,20 +99,25 @@
 		  <div id="status" role="complementary">
 			<h1>Menu</h1>
 			<ul>
-				<li><a href="#">Recommend Books for course</a></li>
-				<li><a href="#">Generate Report</a></li>
-				<li><a href="#">Manage Inventory</a>
-	                <ul class="side-sub-menu" id="sm_manageInventory">
-	                	<li><g:link controller="Book" action="create">View All Books</g:link></li>
-	                	<li><g:link controller="Book" action="create">Add Book</g:link></li>
-	                	<li><g:link controller="Book" action="create">View Waiting List for Book</g:link></li>
-	                </ul>
-		        </li>
+				<g:if test="${session.user.role == 'faculty' }"><li><a href="${createLink(controller: 'Subject', action: 'index') }">Select Books for course</a></li></g:if>
+				<g:if test="${session.user.role == 'admin' }">
+				<li><a href="${createLink(controller: 'UserOrder', action: 'report') }">Generate Report</a></li>
+					<li><a href="#">Manage Inventory</a>
+		                <ul class="side-sub-menu" id="sm_manageInventory">
+		                	<li><g:link controller="Book" action="index">View All Books</g:link></li>
+		                	<li><g:link controller="Book" action="create">Add Book</g:link></li>
+		                	<li><g:link controller="Book" action="index" id="">Modify Book</g:link></li>
+		                	<li><g:link controller="Subject" action="create">Add Course</g:link></li>
+		                	<li><g:link controller="WaitingUser" action="show1" >View Waiting List for Book</g:link></li>
+		                </ul>
+		        	</li>
+				</g:if>
+				
 		        <li><a href="#">My Account</a>
 	                <ul class="side-sub-menu" id="sm_manageInventory">
-	                	<li><g:link>View Past Orders</g:link></li>
+	                	<g:if test="${session.user.role!='admin' }"><li><g:link controller="UserOrder" action="pastOrders" id="${session.userId}"  >View Past Orders</g:link></li></g:if>
 						<li><g:link controller="User" action="edit" id="${session.userId }">Update Account</g:link></li>
-						<li><g:link>Change Password</g:link></li>
+						<g:if test="${session.user.role == 'admin' }"><li><g:link controller="User" action="changePassword" id="${session.userId }">Change Password</g:link></li></g:if>
 						<li><g:link controller="User" action="logout">Logout</g:link></li>
 	                </ul>
 		        </li>

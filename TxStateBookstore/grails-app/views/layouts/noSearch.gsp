@@ -49,7 +49,7 @@
 		<hr/>	
 		<div class="menu">
 	        <ul>
-	        	<g:if test="${request.getSession(false) && session.user != null }">
+	        	<g:if test="${request.getSession(false) && session.user }">
 		            <li><g:link controller="Index" action="Index"  class="home">Home</g:link></li>
 		        </g:if>
 		        
@@ -60,7 +60,7 @@
 	        	<li><a href="#">Contact Us</a></li>
 	            <li><a href="#">Help</a></li>
 	            --%>
-	        	<g:if test="${request.getSession(false) && session.user != null }">
+	        	<g:if test="${request.getSession(false) && session.user }">
 		            <%--<li>
 		                <a href="#">Manage Inventory<span class="arrow">&#9660;</span></a>
 		 
@@ -72,47 +72,21 @@
 		            </li>
 		            <li><a href="#">Recommend Books for course</a></li>
 		            <li><a href="#">Generate Reports</a></li>--%>
-		            <g:if test="${session.user.role!='admin' }">
+		            
 		            <%--Show cart--%>
 		            <li style="float: right; margin-right: 20px;font-size: small; ">
 						<g:link class="cart" controller="Book" action="viewCart"><img  src="${assetPath(src:'shopping-cart.png')}" width="25px"></img></g:link>
 					</li>
-					</g:if>
 	            	<%--Show logged in user's name--%>
-					<li style="float:right; margin-top: 3px;">
+					<li style="float:right">
 						<span>Hello, <b>
 								${session.user.firstName }
-						</b><br/><%-- <a href="#">Account</a>--%></span>
-						
-						 
-						<%-- <ul class="sub-menu" id="sm_account">
-							<li><g:link>View Past Orders</g:link></li>
-							<li><g:link controller="User" action="edit" id="${session.userId }">Update Account Information</g:link></li>
-							<li><g:link controller="User" action="changePassword" id="${session.userId }">Change Password</g:link></li>
-							<li><g:link controller="User" action="logout">Logout</g:link></li>
-						</ul>
-					--%></li>
-				</g:if>
+						</b><br/><a href="#">Account</a></span>
+			</g:if>
 	        </ul>
-		</div>
-		<g:if test="${request.getSession(false) && session.user }">
-		<div style="text-align: center;padding-top: 10px; width:100%">
-			<g:form action="search" controller="Book" >
-				<select name="searchBy" style="padding-right: 5px;margin-right: 5px;">
-					<option id="searchByTitle" value="title">Title</option>
-					<option id="searchByAuthor" value="author">Author</option>
-					<option id="searchBySubject" value="subject">Subject</option>
-					<option id="searchByIsbn" value="isbn">ISBN</option>
-					<option id="searchByCourseNum" value="courseNumber">Course Number</option>
-				</select>
-				<g:textField class="searchbox" name="keyword" maxlength="100" minLength="2" value="Enter Search Keyword Here" onClick="clearSearchBox(this);" onBlur="setDefaultSearchText(this);"/>
-				<g:submitButton name="Search" value="Search" />
-			</g:form>
-		</div>	
-		</g:if>
-		
+		</div>			
 		<g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 	</body>
-</html>
+</html>						

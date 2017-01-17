@@ -3,28 +3,27 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="noSearch.gsp">
+		<meta name="layout" content="noSearch">
 		<g:set var="entityName" value="${message(code: 'address.label', default: 'Address')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
 		<a href="#list-address" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-
-			<g:if test="${request.getSession(false) && session.user }">
-			</g:if>
-							<g:else>
-			<div class="nav" role="navigation">
+		<div class="nav" role="navigation">
 			<ul>
+				<g:if test="${request.getSession(false) && session.user }">
+				</g:if>
+				<g:else>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				</g:else>
-				<%-- <li><g:link class="create" action="create" params="['user.id': addressInstance?.user?.id]"><g:message code="default.new.label" args="[entityName]" /></g:link></li>--%>
+				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
 		<div id="list-address" class="content scaffold-list" role="main">
 			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
+			<%-- <g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
-			</g:if>
+			</g:if>--%>
 			<table>
 			<thead>
 					<tr>
@@ -46,19 +45,17 @@
 				<tbody>
 				<g:each in="${addressInstanceList}" status="i" var="addressInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						<td><g:link action="show" params="['user.id': addressInstance?.user?.id]" id="${addressInstance.id}">${fieldValue(bean: addressInstance, field: "addressLine1")}</g:link></td>
+						<td><g:link action="show" id="${addressInstance.id}">${fieldValue(bean: addressInstance, field: "addressLine1")}</g:link></td>
 					
 						<td>${fieldValue(bean: addressInstance, field: "addressLine2")}</td>
 					
 						<td>${fieldValue(bean: addressInstance, field: "state")}</td>
 					
-						<%-- <td>${fieldValue(bean: addressInstance, field: "zipCode")}</td>--%>
 						<td>${addressInstance?.zipCode.encodeAsHTML()}</td>
 					
 						<td>${fieldValue(bean: addressInstance, field: "addressType")}</td>
 					
 						<td>${fieldValue(bean: addressInstance, field: "user")}</td>
-					
 					</tr>
 				</g:each>
 				</tbody>

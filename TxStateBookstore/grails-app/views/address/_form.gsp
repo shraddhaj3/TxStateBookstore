@@ -34,7 +34,7 @@
 		<g:message code="address.zipCode.label" default="Zip Code" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field name="zipCode" type="number" min="10000" max="99999" value="${addressInstance.zipCode}" required=""/>
+	<g:field name="zipCode" type="number" min="10000" max="99999" value="${addressInstance?.zipCode}" required=""/>
 
 </div>
 
@@ -43,16 +43,16 @@
 		<g:message code="address.addressType.label" default="Address Type" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select name="addressType" from="${addressInstance.constraints.addressType.inList}" required="" value="${addressInstance?.addressType}" valueMessagePrefix="address.addressType"/>
+	<g:select name="addressType" from="${['mailing','billing']}" required="" value="${addressInstance?.addressType}" valueMessagePrefix="address.addressType" noSelection="['': '']"/>
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: addressInstance, field: 'user', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: addressInstance, field: 'user', 'error')} required" hidden="">
 	<label for="user">
 		<g:message code="address.user.label" default="User" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="user" name="user.id" from="${txstatebookstore.User.list()}" optionKey="id" required="" value="${addressInstance?.user?.id}" class="many-to-one"/>
+	<g:select id="user" name="user.id" from="${txstatebookstore.User.list()}" optionKey="id" required="" value="${addressInstance?.user?.id}" class="many-to-one" noSelection="['': '']"/>
 
 </div>
 

@@ -17,9 +17,8 @@ class UserOrderDetail {
 
 	@Override
 	public String toString() {
-		return "UserOrderDetail [book=" + book + ", quantity=" + quantity
-				+ ", unitPrice=" + unitPrice + "]";
+		return 'Order: ' + this.id + ", [book=" + book + ", quantity=" + quantity
+				+ ", unitPrice=" + unitPrice + "]"
 	}
-	
 	
 }

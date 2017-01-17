@@ -116,7 +116,7 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${bookInstance?.users}">
+				<%--<g:if test="${bookInstance?.users}">
 				<li class="fieldcontain">
 					<span id="users-label" class="property-label"><g:message code="book.users.label" default="Users" /></span>
 					
@@ -127,7 +127,7 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${bookInstance?.waitingUsers}">
+				--%><%--<g:if test="${bookInstance?.waitingUsers}">
 				<li class="fieldcontain">
 					<span id="waitingUsers-label" class="property-label"><g:message code="book.waitingUsers.label" default="Waiting Users" /></span>
 					
@@ -138,7 +138,7 @@
 				</li>
 				</g:if>
 			
-			</ol>
+			--%></ol>
 			<g:form url="[resource:bookInstance, action:'delete']" method="DELETE">
 				<fieldset class="buttons">
 					<g:link class="edit" action="edit" resource="${bookInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link>

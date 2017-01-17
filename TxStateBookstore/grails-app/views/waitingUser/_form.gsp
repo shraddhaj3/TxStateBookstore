@@ -2,7 +2,7 @@
 
 
 
-<div class="fieldcontain ${hasErrors(bean: waitingUserInstance, field: 'user', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: waitingUserInstance, field: 'user', 'error')} required" hidden = "true">
 	<label for="user">
 		<g:message code="waitingUser.user.label" default="User" />
 		<span class="required-indicator">*</span>
@@ -11,7 +11,7 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: waitingUserInstance, field: 'dateRequested', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: waitingUserInstance, field: 'dateRequested', 'error')} required" hidden="true">
 	<label for="dateRequested">
 		<g:message code="waitingUser.dateRequested.label" default="Date Requested" />
 		<span class="required-indicator">*</span>

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="noSearch">
 		<g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
 		<title><g:message code="default.edit.label" args="[entityName]" /></title>
 	</head>
@@ -33,9 +33,49 @@
 				<fieldset class="form">
 					<g:render template="form"/>
 				</fieldset>
+				<%--<div class="menu">
 				<fieldset class="buttons">
 					<g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />
+					<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'addresses', 'error')} ">
+					<ul class="one-to-many">
+					<g:each in="${userInstance?.addresses?}" var="a">
+					    <li><g:link controller="address" action="show" id="${a.id}">${a?.encodeAsHTML()}</g:link></li>
+					</g:each>
+					
+					<ul>
+					<li class="edit">
+					
+					<li class="edit">
+					
+					<g:link controller="address" action="edit" params="['user.id': userInstance?.id]">${message(code: 'default.edit.label', args: [message(code: 'address.label', default: 'Address')])}</g:link>
+					</li>
+					--%>
+					<%--</ul>--%>
+					<%--
+					<ul class="one-to-many">
+					<g:each in="${userInstance?.addresses?}" var="a">
+					    <li><g:link controller="address" action="show" id="${a.id}">${a?.encodeAsHTML()}</g:link></li>
+					</g:each>
+					
+					<li class="add">
+					
+					<li><g:link controller="address" action="index" params="['user.id': userInstance?.id]">${message(code: 'default.show.label', args: [message(code: 'address.label', default: 'Address')])}</g:link>
+					<li>
+					<g:link controller="address" action="create" params="['user.id': userInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'address.label', default: 'Address')])}</g:link>
+					</li>
+					</ul>
+					</div>
+					--%>
+					<%--</ul>
+				</fieldset>--%>
+				<fieldset class="buttons">
+				<ul>
+				<li>
+					<g:submitButton name="submit" class="update" params="['user.id': userInstance?.id]" value="${message(code: 'default.button.saveNnext.label', default: 'Save and Next')}" />
+					</li>
+					</ul>
 				</fieldset>
+				</div>
 			</g:form>
 		</div>
 	</body>

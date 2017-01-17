@@ -1,5 +1,4 @@
 <%@ page import="txstatebookstore.Book" %>
-
 <%@ page import="txstatebookstore.Subject" %>
 <!DOCTYPE html>
 <html>
@@ -11,7 +10,7 @@
 	<body>
 		<a href="#show-subject" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div id="show-subject" class="content scaffold-show" role="main">
-			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
+			<h1>Add books for subject</h1>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
@@ -46,28 +45,14 @@
 						</g:each>					
 				</li>
 				</g:if>
-			
-				<g:if test="${subjectInstance?.users}">
-				<li class="fieldcontain">
-					<span id="users-label" class="property-label"><g:message code="subject.users.label" default="Users" /></span>
-					
-						<g:each in="${subjectInstance.users}" var="u">
-						<span class="property-value" aria-labelledby="users-label"><g:link controller="user" action="show" id="${u.id}">${u?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
-				</g:if>
-			
+				<br>
+				
+				<g:form action="addBooks" method="get">
+					<g:select name="booksToAdd" from="${books }" optionKey="id" optionValue="title" multiple="true" />
+					<g:hiddenField name="subject" value="${subjectInstance.id }" />
+					<g:submitButton name="Submit" value="Add Books to Course"/>
+				</g:form>
 			</ol>
-			<g:form url="[resource:subjectInstance, action:'delete']" method="DELETE">
-				<fieldset class="buttons">
-					<g:if test="${session.user.role == 'admin' }"><g:link class="edit" action="edit" resource="${subjectInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-					</g:if>
-					<g:link class="list" action="addBooksForCourse" resource="${subjectInstance}">Add Books for Course</g:link>
-					
-				</fieldset>
-			</g:form>
 		</div>
 	</body>
 </html>

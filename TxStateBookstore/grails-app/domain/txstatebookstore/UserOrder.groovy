@@ -23,8 +23,7 @@ class UserOrder {
 
 	@Override
 	public String toString() {
-		return "UserOrder [orderDate=" + orderDate + ", user=" + user
-				+ ", paymentMode=" + paymentMode + ", status=" + status + "]";
+		return "UserOrder: " + this.id + ", [orderDate=" + orderDate + ", user=" + user + ", status=" + status + "]";
 	}
 	
 }

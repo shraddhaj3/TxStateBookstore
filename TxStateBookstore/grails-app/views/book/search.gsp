@@ -36,14 +36,23 @@
 									ISBN: ${book.isbn }
 									<br/>
 									<b>Price: $ ${book.price }</b>
-									
+									<g:if test="${book.quantity <= 0}">
+										<h3 style="color: teal;"><i>Out of Stock!</i></h3>
+									</g:if>
 								</td>
 								<td>
-									<g:if test="${session.role == 'admin' }">
-										<g:link controller="Book" action="edit" id="${book.id }">Edit Book</g:link>  
+									<%--If the user is admin --%>
+									<g:if test="${session.user.role == 'admin' }">
+										<g:link controller="Book" action="edit" id="${book.id }">Edit Book</g:link> 
 									</g:if>
 									<g:else>
-										<g:link controller="Book" action="addToCart" id="${book.id }">Add to Cart</g:link>
+										<%--For users other than admin --%>
+										<g:if test="${book.quantity <= 0}">
+											<g:link controller="Book" action="addToWaitingList" id="${book.id }">Add to Waiting List</g:link>
+										</g:if>
+										<g:else test="${book.quantity > 0}">
+											<g:link controller="Book" action="addToCart" id="${book.id }">Add to Cart</g:link>
+										</g:else>
 									</g:else>
 								</td>
 							</tr>

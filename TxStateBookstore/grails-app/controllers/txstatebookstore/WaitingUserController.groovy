@@ -10,21 +10,21 @@ class WaitingUserController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) { if(!session.userName) redirect(controller:"User", action: "login")
+    def index(Integer max) { if(!session.user) redirect(controller:"User", action: "login")
         params.max = Math.min(max ?: 10, 100)
         respond WaitingUser.list(params), model:[waitingUserInstanceCount: WaitingUser.count()]
     }
 
-    def show(WaitingUser waitingUserInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def show(WaitingUser waitingUserInstance) { if(!session.user) redirect(controller:"User", action: "login")
         respond waitingUserInstance
     }
 
-    def create() { if(!session.userName) redirect(controller:"User", action: "login")
+    def create() { if(!session.user) redirect(controller:"User", action: "login")
         respond new WaitingUser(params)
     }
 
     @Transactional
-    def save(WaitingUser waitingUserInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def save(WaitingUser waitingUserInstance) { if(!session.user) redirect(controller:"User", action: "login")
         if (waitingUserInstance == null) {
             notFound()
             return
@@ -46,12 +46,12 @@ class WaitingUserController {
         }
     }
 
-    def edit(WaitingUser waitingUserInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def edit(WaitingUser waitingUserInstance) { if(!session.user) redirect(controller:"User", action: "login")
         respond waitingUserInstance
     }
 
     @Transactional
-    def update(WaitingUser waitingUserInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def update(WaitingUser waitingUserInstance) { if(!session.user) redirect(controller:"User", action: "login")
         if (waitingUserInstance == null) {
             notFound()
             return
@@ -74,7 +74,7 @@ class WaitingUserController {
     }
 
     @Transactional
-    def delete(WaitingUser waitingUserInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def delete(WaitingUser waitingUserInstance) { if(!session.user) redirect(controller:"User", action: "login")
 
         if (waitingUserInstance == null) {
             notFound()
@@ -92,7 +92,7 @@ class WaitingUserController {
         }
     }
 
-    protected void notFound() { if(!session.userName) redirect(controller:"User", action: "login")
+    protected void notFound() { if(!session.user) redirect(controller:"User", action: "login")
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'waitingUser.label', default: 'WaitingUser'), params.id])
@@ -101,4 +101,11 @@ class WaitingUserController {
             '*'{ render status: NOT_FOUND }
         }
     }
+	/*Code added by Reena*/
+	def show1(){if(!session.user) redirect(controller:"User", action: "login")
+		redirect action: "index", method: "GET"
+		WaitingUser U1 = new WaitingUser ()
+		U1.getId()
+		show(U1)
+	}
 }

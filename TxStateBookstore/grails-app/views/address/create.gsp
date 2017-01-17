@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="noSearch.gsp">
 		<g:set var="entityName" value="${message(code: 'address.label', default: 'Address')}" />
 		<title><g:message code="default.create.label" args="[entityName]" /></title>
 	</head>
@@ -9,8 +9,12 @@
 		<a href="#create-address" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
+				<g:if test="${request.getSession(false) && session.user }">
+				</g:if>
+				<g:else>			
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
+				</g:else>
+				<%-- <li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>--%>
 			</ul>
 		</div>
 		<div id="create-address" class="content scaffold-create" role="main">

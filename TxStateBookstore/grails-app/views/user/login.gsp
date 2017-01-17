@@ -8,9 +8,13 @@
 		<g:if test="${flash.message}">
 			<div class="message">${flash.message}</div>
 		</g:if>
-		<div style="margin: 20px;">
-			<h1>TxState Online Bookstore Login</h1>
-			Use your TxState login credentials
+		<div style="margin: 20px; text-align: center;">
+			<h1 style = "text-align: center;">TxState Online Bookstore Login</h1>
+			</br>
+			Use your TxState login credentials.
+			<%-- <br />--%>
+			Don't have an account?Click on
+        	<g:link controller="user" action="registration">Account Registration</g:link>
 		</div>
 		<g:form action="validate">
 			<table>

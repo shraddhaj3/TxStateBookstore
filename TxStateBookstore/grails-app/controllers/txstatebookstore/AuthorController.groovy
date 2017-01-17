@@ -11,25 +11,25 @@ class AuthorController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-		if(!session.userName) redirect(controller:"User", action: "login")
+		if(!session.user) redirect(controller:"User", action: "login")
 		
         params.max = Math.min(max ?: 10, 100)
         respond Author.list(params), model:[authorInstanceCount: Author.count()]
     }
 
     def show(Author authorInstance) {
-		if(!session.userName) redirect(controller:"User", action: "login")
+		if(!session.user) redirect(controller:"User", action: "login")
         respond authorInstance
     }
 
     def create() {
-		if(!session.userName) redirect(controller:"User", action: "login")
+		if(!session.user) redirect(controller:"User", action: "login")
         respond new Author(params)
     }
 
     @Transactional
     def save(Author authorInstance) {
-		if(!session.userName) redirect(controller:"User", action: "login")
+		if(!session.user) redirect(controller:"User", action: "login")
         if (authorInstance == null) {
             notFound()
             return
@@ -52,13 +52,13 @@ class AuthorController {
     }
 
     def edit(Author authorInstance) {
-		if(!session.userName) redirect(controller:"User", action: "login")
+		if(!session.user) redirect(controller:"User", action: "login")
         respond authorInstance
     }
 
     @Transactional
     def update(Author authorInstance) {
-		if(!session.userName) redirect(controller:"User", action: "login")
+		if(!session.user) redirect(controller:"User", action: "login")
         if (authorInstance == null) {
             notFound()
             return
@@ -82,7 +82,7 @@ class AuthorController {
 
     @Transactional
     def delete(Author authorInstance) {
-		if(!session.userName) redirect(controller:"User", action: "login")
+		if(!session.user) redirect(controller:"User", action: "login")
         if (authorInstance == null) {
             notFound()
             return
@@ -100,7 +100,7 @@ class AuthorController {
     }
 
     protected void notFound() {
-		if(!session.userName) redirect(controller:"User", action: "login")
+		if(!session.user) redirect(controller:"User", action: "login")
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'author.label', default: 'Author'), params.id])

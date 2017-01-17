@@ -13,22 +13,22 @@ class BookController {
     static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
     def index(Integer max) {
-		if(!session.userName) redirect(controller:"User", action: "login")
+		if(!session.user) redirect(controller:"User", action: "login")
         params.max = Math.min(max ?: 10, 100)
         respond Book.list(params), model:[bookInstanceCount: Book.count()]
     }
 
     def show(Book bookInstance) {
-		if(!session.userName) redirect(controller:"User", action: "login")		
+		if(!session.user) redirect(controller:"User", action: "login")		
         respond bookInstance
     }
 
-    def create() { if(!session.userName) redirect(controller:"User", action: "login")
+    def create() { if(!session.user) redirect(controller:"User", action: "login")
         respond new Book(params)
     }
 
     @Transactional
-    def save(Book bookInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def save(Book bookInstance) { if(!session.user) redirect(controller:"User", action: "login")
         if (bookInstance == null) {
             notFound()
             return
@@ -52,12 +52,12 @@ class BookController {
         }
     }
 
-    def edit(Book bookInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def edit(Book bookInstance) { if(!session.user) redirect(controller:"User", action: "login")
         respond bookInstance
     }
 
     @Transactional
-    def update(Book bookInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def update(Book bookInstance) { if(!session.user) redirect(controller:"User", action: "login")
         if (bookInstance == null) {
             notFound()
             return
@@ -83,7 +83,7 @@ class BookController {
     }
 
     @Transactional
-    def delete(Book bookInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def delete(Book bookInstance) { if(!session.user) redirect(controller:"User", action: "login")
 
         if (bookInstance == null) {
             notFound()
@@ -101,7 +101,7 @@ class BookController {
         }
     }
 
-    protected void notFound() { if(!session.userName) redirect(controller:"User", action: "login")
+    protected void notFound() { if(!session.user) redirect(controller:"User", action: "login")
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'book.label', default: 'Book'), params.id])
@@ -110,7 +110,10 @@ class BookController {
             '*'{ render status: NOT_FOUND }
         }
     }
-	
+	/**
+	 * Added by SJ
+	 * @return
+	 */
 	def search() {
 		def map = [:]
 		
@@ -132,25 +135,37 @@ class BookController {
 			}
 		}
 		if(params.searchBy == 'subject') {
-			searchResults = Book.withCriteria {
-				subjects{
-					like("courseName",'%' + params.keyword + '%')
-				}
+			def subject = Subject.findByCourseNameLike('%'+params.keyword+'%')
+			if(subject == null) {
+				searchResults = null
 			}
-			maxResults(50)
-			order("title", "asc")
+			else {
+				def booklist = []
+				for(bid in subject.courseBooks.split(',')) {
+					def bookToAdd = Book.get(bid)
+					if(bookToAdd != null)
+					booklist.add(bookToAdd)
+				}
+				searchResults = booklist
+			}
 		}
 		if(params.searchBy == 'isbn') {
 			searchResults = Book.findAllByIsbnLike('%' + params.keyword + '%', [max: 50, sort: 'title', order: 'asc'])
 		}
 		if(params.searchBy == 'courseNumber') {
-			searchResults = Book.withCriteria {
-				subjects{
-					like("courseNumber",'%' + params.keyword + '%')
-				}
+			def subject = Subject.findByCourseNumberLike('%'+params.keyword+'%')
+			if(subject == null) {
+				searchResults = null
 			}
-			maxResults(50)
-			order("title", "asc")
+			else {
+				def booklist = []
+				for(bid in subject.courseBooks.split(',')) {
+					def bookToAdd = Book.get(bid)
+					if(bookToAdd != null)
+					booklist.add(bookToAdd)
+				}
+				searchResults = booklist
+			}
 		}
 		if(params.searchBy == 'professor') {
 			searchResults = Book.withCriteria {
@@ -178,6 +193,11 @@ class BookController {
 		response.outputStream.flush()
 	}
 	
+	/*Functions below have been Added by Shraddha*/
+	/**
+	 * 
+	 * @return
+	 */
 	def addToCart() {
 		def cart
 		def map = [:]
@@ -187,6 +207,7 @@ class BookController {
 			
 		}else{
 			cart = [:]
+			cart["subtotal"] = ["quantity": 0, "amount":0.0]
 		}
 		def bookId = params.id;
 		if(cart.containsKey(bookId)){
@@ -199,13 +220,99 @@ class BookController {
 			}
 		}
 		
+		cart["subtotal"]["quantity"] = cart["subtotal"]["quantity"] + 1;
+		cart["subtotal"]["amount"] = cart["subtotal"]["amount"] + (cart[bookId]["price"]);
+		
 		map.put('cart', cart)
-		session.myCart = cart;
-		render(view: 'myCart')
+		map.put('user', User.get(session.userId))
+		
+		session.myCart = cart
+		render(view: 'myCart', model: map)
 	}
 	
 	def viewCart(){
-		def map = [:]
+		def map = [:]	
+		map.put('user', User.get(session.userId))
 		render(view: 'myCart', model: map)
+	}
+	
+	
+	def addToWaitingList(Book bookInstance){
+		
+		
+		def waitingUser = new WaitingUser(book:bookInstance, user:session.user, dateRequested:new Date());
+		waitingUser.save flush:true
+		flash.message = "Book added to waiting list."
+		println waitingUser
+		render(view:'addWaiting',model:bookInstance)
+	}
+	
+	def deleteFromCart(){
+		def cart
+		if(session.myCart != null){
+			cart = session.myCart
+			
+			//retrieve book id of book to be deleted 
+			def bookId = params.id;
+			def book = null;
+			if(cart.containsKey(bookId)){
+				book =  Book.findById(bookId);
+			}
+			
+			//If book found in cart; and it exists in DB delete it from cart
+			if(book!=null){
+				cart["subtotal"]["quantity"] = cart["subtotal"]["quantity"] - cart[bookId]["quantity"];
+				cart["subtotal"]["amount"] = cart["subtotal"]["amount"] - (cart[bookId]["price"]*cart[bookId]["quantity"]);
+			
+				cart.remove(bookId)
+				
+				if(cart.size() == 1 && cart.containsKey("subtotal")){
+					cart["subtotal"] = ["quantity": 0, "amount":0.0]
+				}	
+				session.myCart = cart;
+			}
+		}
+		render(view: 'myCart')
+	}
+	
+	def updateCart(){
+		
+		def bookId = params.id;
+		def quantity = params.quantity;
+		System.out.println("id: "+ bookId)
+		if(quantity!=null)
+			quantity = Integer.valueOf(quantity);
+		
+		def cart = session.myCart;
+		if(cart != null){
+			if(quantity!=null && cart.containsKey(bookId) && quantity >= 0){
+				cart["subtotal"]["quantity"] = cart["subtotal"]["quantity"] - cart[bookId]["quantity"] + quantity;
+				cart["subtotal"]["amount"] = cart["subtotal"]["amount"] - (cart[bookId]["price"]*cart[bookId]["quantity"]) + (cart[bookId]["price"]*quantity);
+				cart[bookId]["quantity"] = quantity;
+			}
+				
+		}
+		System.out.print("Quantity : "+ cart["subtotal"]["quantity"] +", amount="+cart["subtotal"]["amount"]+ ", book qt= "+cart[bookId]["quantity"])
+		session.myCart = cart;
+		def map = [:]
+		map.put('user', User.get(session.userId))
+		render(view: 'myCart', model:map)
+	}
+	
+	def checkAvailability(Book book){
+		if(book==null)
+			return false;
+			
+		book = Book.findById(book.id);
+		if(book==null)
+				return false;
+				
+		if(book.quantity <= 0)
+			return false;
+		return true;
+	}
+	
+	def BooksForCourseIndex() {
+		
 	}
 }

@@ -10,21 +10,21 @@ class UserOrderDetailController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) { if(!session.userName) redirect(controller:"User", action: "login")
+    def index(Integer max) { if(!session.user) redirect(controller:"User", action: "login")
         params.max = Math.min(max ?: 10, 100)
         respond UserOrderDetail.list(params), model:[userOrderDetailInstanceCount: UserOrderDetail.count()]
     }
 
-    def show(UserOrderDetail userOrderDetailInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def show(UserOrderDetail userOrderDetailInstance) { if(!session.user) redirect(controller:"User", action: "login")
         respond userOrderDetailInstance
     }
 
-    def create() { if(!session.userName) redirect(controller:"User", action: "login")
+    def create() { if(!session.user) redirect(controller:"User", action: "login")
         respond new UserOrderDetail(params)
     }
 
     @Transactional
-    def save(UserOrderDetail userOrderDetailInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def save(UserOrderDetail userOrderDetailInstance) { if(!session.user) redirect(controller:"User", action: "login")
         if (userOrderDetailInstance == null) {
             notFound()
             return
@@ -46,12 +46,12 @@ class UserOrderDetailController {
         }
     }
 
-    def edit(UserOrderDetail userOrderDetailInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def edit(UserOrderDetail userOrderDetailInstance) { if(!session.user) redirect(controller:"User", action: "login")
         respond userOrderDetailInstance
     }
 
     @Transactional
-    def update(UserOrderDetail userOrderDetailInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def update(UserOrderDetail userOrderDetailInstance) { if(!session.user) redirect(controller:"User", action: "login")
         if (userOrderDetailInstance == null) {
             notFound()
             return
@@ -74,7 +74,7 @@ class UserOrderDetailController {
     }
 
     @Transactional
-    def delete(UserOrderDetail userOrderDetailInstance) { if(!session.userName) redirect(controller:"User", action: "login")
+    def delete(UserOrderDetail userOrderDetailInstance) { if(!session.user) redirect(controller:"User", action: "login")
 
         if (userOrderDetailInstance == null) {
             notFound()
@@ -92,7 +92,7 @@ class UserOrderDetailController {
         }
     }
 
-    protected void notFound() { if(!session.userName) redirect(controller:"User", action: "login")
+    protected void notFound() { if(!session.user) redirect(controller:"User", action: "login")
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'userOrderDetail.label', default: 'UserOrderDetail'), params.id])

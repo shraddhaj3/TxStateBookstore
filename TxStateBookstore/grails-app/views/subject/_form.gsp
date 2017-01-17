@@ -21,20 +21,8 @@
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: subjectInstance, field: 'books', 'error')} ">
-	<label for="books">
-		<g:message code="subject.books.label" default="Books" />
-		
-	</label>
-	
-
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: subjectInstance, field: 'users', 'error')} ">
-	<label for="users">
-		<g:message code="subject.users.label" default="Users" />
-		
-	</label>
-	
-
+<div class="fieldcontain ${hasErrors(bean: subjectInstance, field: 'users', 'error')} "> 
 </div>
 

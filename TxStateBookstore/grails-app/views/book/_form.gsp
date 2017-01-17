@@ -1,5 +1,5 @@
 <%@ page import="txstatebookstore.Book" %>
-
+<%@ page import="txstatebookstore.Author" %>
 
 
 <div class="fieldcontain ${hasErrors(bean: bookInstance, field: 'title', 'error')} required">
@@ -71,6 +71,10 @@
 		<g:message code="book.authors.label" default="Authors" />
 		
 	</label>
+<%-- 	<ul class="one-to-many"> 
+ <g:select name="authors" from ="${texasbookstore.Author.list()}"  required="" value="${authorInstance?.authorName}" valueMessagePrefix="author.authorName"/>
+	 
+	</ul> --%>
 	
 <ul class="one-to-many">
 <g:each in="${bookInstance?.authors?}" var="a">
@@ -89,11 +93,11 @@
 		<g:message code="book.price.label" default="Price" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field name="price" value="${fieldValue(bean: bookInstance, field: 'price')}" required=""/>
+	<g:field name="price"  type= "number" value="${fieldValue(bean: bookInstance, field: 'price')}" required=""/>
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: bookInstance, field: 'subjects', 'error')} ">
+<%--<div class="fieldcontain ${hasErrors(bean: bookInstance, field: 'subjects', 'error')} ">
 	<label for="subjects">
 		<g:message code="book.subjects.label" default="Subjects" />
 		
@@ -102,7 +106,7 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: bookInstance, field: 'users', 'error')} ">
+--%><%--<div class="fieldcontain ${hasErrors(bean: bookInstance, field: 'users', 'error')} ">
 	<label for="users">
 		<g:message code="book.users.label" default="Users" />
 		
@@ -111,13 +115,14 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: bookInstance, field: 'waitingUsers', 'error')} ">
+--%>
+<%--<div class="fieldcontain ${hasErrors(bean: bookInstance, field: 'waitingUsers', 'error')} ">
 	<label for="waitingUsers">
 		<g:message code="book.waitingUsers.label" default="Waiting Users" />
 		
 	</label>
 	
-<ul class="one-to-many">
+--%><%--<ul class="one-to-many">
 <g:each in="${bookInstance?.waitingUsers?}" var="w">
     <li><g:link controller="waitingUser" action="show" id="${w.id}">${w?.encodeAsHTML()}</g:link></li>
 </g:each>
@@ -127,5 +132,5 @@
 </ul>
 
 
-</div>
+--%></div>
 

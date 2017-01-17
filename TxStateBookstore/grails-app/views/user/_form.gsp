@@ -110,6 +110,8 @@
 
 </div>
 
+<%--
+</div>
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'addresses', 'error')} ">
 	<label for="addresses">
 		<g:message code="user.addresses.label" default="Addresses" />
@@ -120,6 +122,12 @@
 <g:each in="${userInstance?.addresses?}" var="a">
     <li><g:link controller="address" action="show" id="${a.id}">${a?.encodeAsHTML()}</g:link></li>
 </g:each>
+</br>
+</ul>
+
+
+</div>
+
 <li class="add">
 <g:link controller="address" action="create" params="['user.id': userInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'address.label', default: 'Address')])}</g:link>
 </li>
@@ -145,4 +153,4 @@
 	<g:select name="subjects" from="${txstatebookstore.Subject.list()}" multiple="multiple" optionKey="id" size="5" value="${userInstance?.subjects*.id}" class="many-to-many"/>
 
 </div>
-
+--%>
